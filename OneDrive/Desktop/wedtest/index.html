@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern E-Commerce Store</title>
+    <link rel="stylesheet" href="main.css">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- 1. หน้า Login -->
+    <section id="login-page" class="page active">
+        <div class="login-container">
+            <div class="login-box">
+                <div class="login-icon"><i class="fa-solid fa-store"></i></div>
+                <h2>ยินดีต้อนรับ</h2>
+                <p>เข้าสู่ระบบเพื่อเริ่มช้อปปิ้ง</p>
+                <div class="input-group">
+                    <i class="fa-solid fa-user"></i>
+                    <input type="text" id="username" placeholder="ชื่อผู้ใช้">
+                </div>
+                <div class="input-group">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" id="password" placeholder="รหัสผ่าน">
+                </div>
+                <button class="btn-primary" onclick="login()">เข้าสู่ระบบ</button>
+                <p id="login-error" class="error-msg"></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. หน้าหลัก (Home) -->
+    <section id="home-page" class="page">
+        <header>
+            <div class="logo">JUBJUB<span>SHOP</span></div>
+            <nav>
+                <ul>
+                    <li><a href="#" onclick="showSection('home-page')"><i class="fa-solid fa-house"></i> หน้าแรก</a></li>
+                    <li><a href="#" onclick="showSection('cart-page')" class="cart-nav">
+                        <i class="fa-solid fa-cart-shopping"></i> ตะกร้า
+                        <span id="cart-count" class="badge">0</span>
+                    </a></li>
+                </ul>
+            </nav>
+            <div class="user-menu">
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fa-solid fa-power-off"></i> ออกจากระบบ
+                </button>
+            </div>
+        </header>
+
+        <div class="hero">
+            <h1>Flash Sale! ลดสูงสุด 50%</h1>
+            <p>คัดสรรสินค้าคุณภาพเพื่อคุณโดยเฉพาะ</p>
+        </div>
+
+        <div class="container">
+            <h2 class="section-title">สินค้าแนะนำ</h2>
+            <div class="product-grid" id="product-list">
+                <!-- สินค้าจะแสดงที่นี่จาก JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. หน้าสรุปรายการสินค้า (Cart) -->
+    <section id="cart-page" class="page">
+        <header>
+            <div class="logo">MY<span>SHOP</span></div>
+            <div class="user-menu">
+                <button class="back-link" onclick="showSection('home-page')"><i class="fa-solid fa-chevron-left"></i> กลับไปเลือกสินค้า</button>
+            </div>
+        </header>
+
+        <div class="container">
+            <h1 class="page-title">รายการสินค้าในตะกร้า</h1>
+            <div id="cart-items-container">
+                <!-- รายการในตะกร้าจะแสดงที่นี่ -->
+            </div>
+            <div class="cart-summary-card">
+                <div class="summary-row">
+                    <span>ราคารวมทั้งหมด:</span>
+                    <span class="total-amount"><span id="total-price">0</span> บาท</span>
+                </div>
+                <button class="checkout-btn" onclick="processCheckout()">
+                    ดำเนินการชำระเงิน <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. หน้าชำระเงิน (Payment) -->
+    <section id="payment-page" class="page">
+        <div class="payment-container">
+            <div class="payment-box">
+                <div class="payment-header">
+                    <h2>ชำระเงิน</h2>
+                    <p>กรุณาเลือกวิธีการชำระเงิน</p>
+                </div>
+                
+                <div class="payment-methods">
+                    <div id="method-card" class="method active" onclick="switchPayment('card')">
+                        <i class="fa-solid fa-credit-card"></i> บัตรเครดิต
+                    </div>
+                    <div id="method-bank" class="method" onclick="switchPayment('bank')">
+                        <i class="fa-solid fa-building-columns"></i> ธนาคาร
+                    </div>
+                </div>
+
+                <div class="payment-form">
+                    <!-- ส่วนบัตรเครดิต -->
+                    <div id="card-fields">
+                        <div class="input-field">
+                            <label>ชื่อบนบัตร</label>
+                            <input type="text" placeholder="ชื่อ-นามสกุล">
+                        </div>
+                        <div class="input-field">
+                            <label>หมายเลขบัตร</label>
+                            <input type="text" placeholder="0000 0000 0000 0000">
+                        </div>
+                        <div class="row">
+                            <div class="input-field">
+                                <label>วันหมดอายุ</label>
+                                <input type="text" placeholder="MM/YY">
+                            </div>
+                            <div class="input-field">
+                                <label>CVV</label>
+                                <input type="text" placeholder="123">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ส่วนธนาคาร -->
+                    <div id="bank-fields" style="display: none;">
+                        <label>เลือกธนาคาร:</label>
+                        <select id="bank-select" class="bank-dropdown">
+                            <option value="kbank">ธนาคารกสิกรไทย (KBank)</option>
+                            <option value="scb">ธนาคารไทยพาณิชย์ (SCB)</option>
+                            <option value="bbl">ธนาคารกรุงเทพ (BBL)</option>
+                            <option value="ktb">ธนาคารกรุงไทย (KTB)</option>
+                        </select>
+                        <div class="info-alert">
+                            <i class="fa-solid fa-circle-info"></i>
+                            ระบบจะพาคุณไปยังหน้าแอปธนาคารหลังจากกดยืนยัน
+                        </div>
+                    </div>
+
+                    <button class="confirm-payment-btn" onclick="completePayment()">ยืนยันการชำระเงิน</button>
+                    <button class="cancel-btn" onclick="showSection('cart-page')">ยกเลิกและกลับไปหน้าตะกร้า</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="java.js"></script>
+</body>
+</html>
